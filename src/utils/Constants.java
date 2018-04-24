@@ -32,7 +32,7 @@ public class Constants {
      * Drone pickup accuracy
      */
     public static final float PICKUP_DISTANCE = 3f;
-    public static final float DRONE_PICKUP_DISTANCE = 5f;
+    public static final float DRONE_PICKUP_DISTANCE = 3f;
 
 
     /**

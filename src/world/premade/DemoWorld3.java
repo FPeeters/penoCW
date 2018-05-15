@@ -36,8 +36,8 @@ public class DemoWorld3 extends World {
 		this.worldObjects[0].setPosition(new Vector3f(-50, 100, -1200));
 		this.worldObjects[1].setPosition(new Vector3f(-800, 150, -500));
 		this.worldObjects[2].setPosition(new Vector3f(0,125,500));
-		this.worldObjects[3].setPosition(new Vector3f(1400, 100, -950));
-		this.worldObjects[4].setPosition(new Vector3f(100, 75, -1050));
+		this.worldObjects[3].setPosition(new Vector3f(1400, 100, -200));
+		this.worldObjects[4].setPosition(new Vector3f(100, 75, -300));
 		
 		Arrays.asList(worldObjects).stream().forEach(c -> c.setScale(5));
 

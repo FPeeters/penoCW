@@ -63,7 +63,7 @@ public class FlyPilot extends PilotPart {
 		this.climbAngle = Constants.climbAngle;
 		this.rMax = config.getRMax();
 		this.maxThrust = config.getMaxThrust();
-		this.turnRadius = 900f;
+		this.turnRadius = 820f;
 
 		this.pitchPID = new PitchPID(this);
 		this.thrustPID = new ThrustPID(this);
@@ -114,7 +114,8 @@ public class FlyPilot extends PilotPart {
 
 		// update pos met imagerecog
 		 if (getCurrentCube().distance(pos) < 100) {
-		    System.out.println("Recog active");
+		    //System.out.println(getCurrentCube().toString() + "   " + cubeNb);
+		    System.out.println(cubes[cubeNb]);
              recog.addNewImage(inputs.getImage(), inputs.getPitch(),
                      inputs.getHeading(), inputs.getRoll(), new float[] {
                              inputs.getX(), inputs.getY(), inputs.getZ() });

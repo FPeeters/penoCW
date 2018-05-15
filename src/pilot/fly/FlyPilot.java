@@ -7,6 +7,8 @@ import pilot.PilotPart;
 import pilot.fly.pid.PitchPID;
 import pilot.fly.pid.RollPID;
 import pilot.fly.pid.ThrustPID;
+import recognition.Cube;
+import recognition.ImageProcessing;
 import utils.Constants;
 import utils.FloatMath;
 import utils.Utils;
@@ -14,6 +16,8 @@ import utils.Utils;
 import interfaces.AutopilotConfig;
 import interfaces.AutopilotInputs;
 import interfaces.AutopilotOutputs;
+
+import java.util.ArrayList;
 
 public class FlyPilot extends PilotPart {
 
@@ -48,6 +52,8 @@ public class FlyPilot extends PilotPart {
 	private ThrustPID thrustPID;
 	private RollPID rollPID;
 
+	private ImageProcessing recog;
+
 	public FlyPilot(Vector3f[] cubes) {
 		this.cubes = cubes;
 	}
@@ -57,13 +63,15 @@ public class FlyPilot extends PilotPart {
 		this.climbAngle = Constants.climbAngle;
 		this.rMax = config.getRMax();
 		this.maxThrust = config.getMaxThrust();
-		this.turnRadius = 820f;
+		this.turnRadius = 900f;
 
 		this.pitchPID = new PitchPID(this);
 		this.thrustPID = new ThrustPID(this);
 		this.rollPID = new RollPID(this);
 
 		this.cubeNb = 0;
+
+		this.recog = new ImageProcessing();
 	}
 
 	@Override
@@ -104,19 +112,20 @@ public class FlyPilot extends PilotPart {
 					newThrust, rMax, rMax, rMax);
 		}
 
-//		// update pos met imagerecog
-//		 if (getCurrentCube().distance(pos) < 100) {
-//		 recog.addNewImage(inputs.getImage(), inputs.getPitch(),
-//		 inputs.getHeading(), inputs.getRoll(), new float[] {
-//		 inputs.getX(), inputs.getY(), inputs.getZ() });
-//		
-//		 ArrayList<Cube> locs = recog.generateLocations();
-//		 if (locs.size() > 0) {
-//		 float[] cubePos = locs.get(0).getLocation();
-//		 Vector3f cubePosition = new Vector3f(cubePos[0], cubePos[1], cubePos[2]);
-//		 getCurrentCube().add(cubePosition).mul(0.5f);
-//		 }
-//		 }
+		// update pos met imagerecog
+		 if (getCurrentCube().distance(pos) < 100) {
+		    System.out.println("Recog active");
+             recog.addNewImage(inputs.getImage(), inputs.getPitch(),
+                     inputs.getHeading(), inputs.getRoll(), new float[] {
+                             inputs.getX(), inputs.getY(), inputs.getZ() });
+
+             ArrayList<Cube> locs = recog.generateLocations();
+             if (locs.size() > 0) {
+                 float[] cubePos = locs.get(0).getLocation();
+                 Vector3f cubePosition = new Vector3f(cubePos[0], cubePos[1], cubePos[2]);
+                 getCurrentCube().add(cubePosition).mul(0.5f);
+             }
+		 }
 
 		// moeten we omhoog?
 		if ((getCurrentCube().y - pos.y) > 2.5) {

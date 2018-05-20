@@ -113,20 +113,20 @@ public class FlyPilot extends PilotPart {
 		}
 
 		// update pos met imagerecog
-		 if (getCurrentCube().distance(pos) < 100) {
-		    //System.out.println(getCurrentCube().toString() + "   " + cubeNb);
-		    System.out.println(cubes[cubeNb]);
-             recog.addNewImage(inputs.getImage(), inputs.getPitch(),
-                     inputs.getHeading(), inputs.getRoll(), new float[] {
-                             inputs.getX(), inputs.getY(), inputs.getZ() });
-
-             ArrayList<Cube> locs = recog.generateLocations();
-             if (locs.size() > 0) {
-                 float[] cubePos = locs.get(0).getLocation();
-                 Vector3f cubePosition = new Vector3f(cubePos[0], cubePos[1], cubePos[2]);
-                 getCurrentCube().add(cubePosition).mul(0.5f);
-             }
-		 }
+//		 if (getCurrentCube().distance(pos) < 100) {
+//		    //System.out.println(getCurrentCube().toString() + "   " + cubeNb);
+//		    System.out.println(cubes[cubeNb]);
+//             recog.addNewImage(inputs.getImage(), inputs.getPitch(),
+//                     inputs.getHeading(), inputs.getRoll(), new float[] {
+//                             inputs.getX(), inputs.getY(), inputs.getZ() });
+//
+//             ArrayList<Cube> locs = recog.generateLocations();
+//             if (locs.size() > 0) {
+//                 float[] cubePos = locs.get(0).getLocation();
+//                 Vector3f cubePosition = new Vector3f(cubePos[0], cubePos[1], cubePos[2]);
+//                 getCurrentCube().add(cubePosition).mul(0.5f);
+//             }
+//		 }
 
 		// moeten we omhoog?
 		if ((getCurrentCube().y - pos.y) > 2.5) {

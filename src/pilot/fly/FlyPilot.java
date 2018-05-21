@@ -101,7 +101,6 @@ public class FlyPilot extends PilotPart {
 
 		// cube geraakt? zo ja, volgende selecteren
 		if (getCurrentCube().distance(pos) < Constants.DRONE_PICKUP_DISTANCE){
-			System.out.println("Cube miss" + pos);
 			this.cubeNb++;
 			this.stableTime = 1.5f;
 

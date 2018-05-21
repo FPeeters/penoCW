@@ -23,15 +23,13 @@ public class StressTestWorld extends World{
 	public void setupAirports() {
 		for(int j = -4; j < 5; j++) {
 			for(int i = -4; i < 5; i ++) {
-				addAirport(new Vector3f(i * 550, 0, j * 550), (float) Math.random() * FloatMath.PI);
+				addAirport(new Vector3f(i * 550, 0, j * 550), 2 * FloatMath.PI / i);
 			}
 		}
-
 	}
 
 	@Override
 	public void setupDrones() {
-		
 		for(int i = 0; i < 81; i++) { 
 			addDrone("drone"+i, i, 0, 1);
 		}

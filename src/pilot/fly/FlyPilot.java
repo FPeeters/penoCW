@@ -27,7 +27,7 @@ public class FlyPilot extends PilotPart {
 	private Vector3f[] cubes;
 
 	public static enum State {
-		Left, Right, Stable, Up, Down, StrongUp, StrongDown, SlowDown, SoftLeft, SoftRight
+		Left, Right, Stable, Up, Down, StrongUp, StrongDown, SlowDown, SoftLeft, SoftRight, VerySoftLeft, VerySoftRight
 	};
 
 	private State currentState;
@@ -63,7 +63,7 @@ public class FlyPilot extends PilotPart {
 		this.climbAngle = Constants.climbAngle;
 		this.rMax = config.getRMax();
 		this.maxThrust = config.getMaxThrust();
-		this.turnRadius = 820f;
+		this.turnRadius = 860f;
 
 		this.pitchPID = new PitchPID(this);
 		this.thrustPID = new ThrustPID(this);
@@ -101,7 +101,6 @@ public class FlyPilot extends PilotPart {
 
 		// cube geraakt? zo ja, volgende selecteren
 		if (getCurrentCube().distance(pos) < Constants.DRONE_PICKUP_DISTANCE){
-			System.out.println("Cube miss" + pos);
 			this.cubeNb++;
 			this.stableTime = 1.5f;
 
@@ -113,97 +112,86 @@ public class FlyPilot extends PilotPart {
 		}
 
 		// update pos met imagerecog
-		 if (getCurrentCube().distance(pos) < 100) {
-		    //System.out.println(getCurrentCube().toString() + "   " + cubeNb);
-		    System.out.println(cubes[cubeNb]);
-             recog.addNewImage(inputs.getImage(), inputs.getPitch(),
-                     inputs.getHeading(), inputs.getRoll(), new float[] {
-                             inputs.getX(), inputs.getY(), inputs.getZ() });
-
-             ArrayList<Cube> locs = recog.generateLocations();
-             if (locs.size() > 0) {
-                 float[] cubePos = locs.get(0).getLocation();
-                 Vector3f cubePosition = new Vector3f(cubePos[0], cubePos[1], cubePos[2]);
-                 getCurrentCube().add(cubePosition).mul(0.5f);
-             }
-		 }
+//		 if (getCurrentCube().distance(pos) < 100) {
+//		    //System.out.println(getCurrentCube().toString() + "   " + cubeNb);
+//		    System.out.println(cubes[cubeNb]);
+//             recog.addNewImage(inputs.getImage(), inputs.getPitch(),
+//                     inputs.getHeading(), inputs.getRoll(), new float[] {
+//                             inputs.getX(), inputs.getY(), inputs.getZ() });
+//
+//             ArrayList<Cube> locs = recog.generateLocations();
+//             if (locs.size() > 0) {
+//                 float[] cubePos = locs.get(0).getLocation();
+//                 Vector3f cubePosition = new Vector3f(cubePos[0], cubePos[1], cubePos[2]);
+//                 getCurrentCube().add(cubePosition).mul(0.5f);
+//             }
+//		 }
 
 		// moeten we omhoog?
-		if ((getCurrentCube().y - pos.y) > 2.5) {
-			if (Math.abs(inputs.getRoll()) > FloatMath.toRadians(0.3f))
+		if ((getCurrentCube().y - pos.y) > 5) {
+			if (Math.abs(inputs.getRoll()) > FloatMath.toRadians(5f))
 				setCurrentState(State.Stable);
 			else
 				setCurrentState(State.StrongUp);
+		}else if (getCurrentCube().y - pos.y > 2) {
+			setCurrentState(State.Up);
 		}
 		// moeten we omlaag?
-		else if (pos.y - getCurrentCube().y > 2.5) {
+		else if (pos.y - getCurrentCube().y > 5) {
 			if (inputs.getRoll() > FloatMath.toRadians(5))
 				setCurrentState(State.Stable);
 			else
 				setCurrentState(State.StrongDown);
 		}
+		else if (pos.y - getCurrentCube().y > 2) {
+			setCurrentState(State.Down);
+		}
 		// iets meer stijgen
-		else if (getCurrentState() == State.StrongUp && (getCurrentCube().y - pos.y) > 1) {} 
-		else if (getCurrentState() == State.StrongDown && (pos.y - getCurrentCube().y) > 2) {} 
+		else if (getCurrentState() == State.StrongUp && (getCurrentCube().y - pos.y) > 2) {}
 		else {
 
 			// draaien nodig?
 			Vector3f diff = getCurrentCube().sub(pos, new Vector3f());
 			float targetHeading = FloatMath.atan2(-diff.x, -diff.z);
 			Boolean side = null;
+			Boolean sideSmall = null;
+			Boolean sideVerySmall = null;
 			// null: nee, true: links, false: rechts
 			Vector3f result = new Vector3f(FloatMath.cos(inputs.getHeading()), 0, -FloatMath.sin(inputs.getHeading()))
 					.cross(new Vector3f(FloatMath.cos(targetHeading), 0, -FloatMath.sin(targetHeading)),
 							new Vector3f());
-			if (result.normalize().y >= 0 && Math.abs(targetHeading - inputs.getHeading()) > FloatMath.toRadians(5))
+			if (result.normalize().y >= 0 && Math.abs(targetHeading - inputs.getHeading()) > FloatMath.toRadians(8f))
 				side = true;
-			else if (result.normalize().y < 0 && Math.abs(targetHeading - inputs.getHeading()) > FloatMath.toRadians(5)) {
-				;
+			else if (result.normalize().y < 0 && Math.abs(targetHeading - inputs.getHeading()) > FloatMath.toRadians(8f)) {
 				side = false;
+			}
+			if (result.normalize().y >= 0 && Math.abs(targetHeading - inputs.getHeading()) > FloatMath.toRadians(5f))
+				sideSmall = true;
+			else if (result.normalize().y < 0 && Math.abs(targetHeading - inputs.getHeading()) > FloatMath.toRadians(5f)) {;
+				sideSmall = false;
+			}
+			if (result.normalize().y >= 0 && Math.abs(targetHeading - inputs.getHeading()) > FloatMath.toRadians(2f))
+				sideVerySmall = true;
+			else if (result.normalize().y < 0 && Math.abs(targetHeading - inputs.getHeading()) > FloatMath.toRadians(2f)) {;
+				sideVerySmall = false;
 			}
 
 			// bocht haalbaar?
 			if (side != null) {
 				if (turnable(pos, inputs.getHeading(), getCurrentCube(), this.turnRadius)) {
-					setCurrentState(side ? State.Left : State.Right);
-				}else if (getCurrentCube().distance(pos) < 40) {
-					setCurrentState(side ? State.SoftLeft : State.SoftRight);
+					setCurrentState(side? State.Left : State.Right);
 				}else
 					// bocht niet haalbaar, rechtdoor gaan.
 					setCurrentState(State.Stable);
-			} else {
-				// moeten we omhoog?
-				if ((getCurrentCube().y - pos.y) > 1.5) {
-					if (inputs.getRoll() > FloatMath.toRadians(5))
-						setCurrentState(State.Stable);
-					else
-						setCurrentState(State.Up);
-				}
-				// moeten we omlaag?
-				else if (pos.y - getCurrentCube().y > 1.5) {
-					if (inputs.getRoll() > FloatMath.toRadians(5))
-						setCurrentState(State.Stable);
-					else
-						setCurrentState(State.Down);
-				}
-				else {
-
-					if (result.normalize().y >= 0
-							&& Math.abs(targetHeading - inputs.getHeading()) > FloatMath.toRadians(2))
-						side = true;
-					else if (result.normalize().y < 0
-							&& Math.abs(targetHeading - inputs.getHeading()) > FloatMath.toRadians(2)) {
-						;
-						side = false;
-					}
-					// bocht haalbaar?
-					if (side != null) {
-						setCurrentState(side ? State.SoftLeft : State.SoftRight);
-					} else {
-						setCurrentState(State.Stable);
-					}
-				}
+			}else  if(side == null && sideSmall != null){
+				setCurrentState(sideSmall? State.SoftLeft: State.SoftRight);
+			}else if(sideSmall == null && sideVerySmall != null){
+				setCurrentState(sideVerySmall? State.VerySoftLeft: State.VerySoftRight);
 			}
+			else {
+				setCurrentState(State.Stable);
+			}
+			
 		}
 
 		control(inputs, currentState);
@@ -250,8 +238,14 @@ public class FlyPilot extends PilotPart {
 		case SoftLeft:
 			turnSoftLeft(input);
 			break;
+		case VerySoftLeft:
+			turnVerySoftLeft(input);
+			break;
 		case SoftRight:
 			turnSoftRight(input);
+			break;
+		case VerySoftRight:
+			turnVerySoftRight(input);
 			break;
 		case SlowDown:
 			slowDown(input);
@@ -327,13 +321,25 @@ public class FlyPilot extends PilotPart {
 	}
 	
 	private void turnSoftRight(AutopilotInputs input) {
-		rollPID.adjustRoll(input, FloatMath.toRadians(-12), State.Right);
+		rollPID.adjustRoll(input, FloatMath.toRadians(-10), State.Right);
 		thrustPID.adjustThrustUp(input, 0.37f);
 		pitchPID.adjustPitchTurn(input, FloatMath.toRadians(0));
 	}
 
 	private void turnSoftLeft(AutopilotInputs input) {
-		rollPID.adjustRoll(input, FloatMath.toRadians(12), State.Left);
+		rollPID.adjustRoll(input, FloatMath.toRadians(10), State.Left);
+		thrustPID.adjustThrustUp(input, 0.37f);
+		pitchPID.adjustPitchTurn(input, FloatMath.toRadians(0));
+	}
+	
+	private void turnVerySoftRight(AutopilotInputs input) {
+		rollPID.adjustRoll(input, FloatMath.toRadians(-4), State.Right);
+		thrustPID.adjustThrustUp(input, 0.37f);
+		pitchPID.adjustPitchTurn(input, FloatMath.toRadians(0));
+	}
+	
+	private void turnVerySoftLeft(AutopilotInputs input) {
+		rollPID.adjustRoll(input, FloatMath.toRadians(4), State.Left);
 		thrustPID.adjustThrustUp(input, 0.37f);
 		pitchPID.adjustPitchTurn(input, FloatMath.toRadians(0));
 	}

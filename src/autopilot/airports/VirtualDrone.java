@@ -128,6 +128,7 @@ public class VirtualDrone {
     }
 
     public void endSimulation() {
-        pilot.simulationEnded();
+    	if (pilot != null) 
+    		pilot.simulationEnded();
     }
 }

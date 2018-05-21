@@ -14,6 +14,14 @@ import utils.Utils;
 
 public class Physics {
 	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return pos.toString();
+	}
+	
+	
+	
 	/**
 	 * Drone position constants
 	 */
@@ -88,7 +96,7 @@ public class Physics {
 		this.rwIncl = FloatMath.toRadians(10);
 		
 		this.pos = new Vector3f(startPos);
-		this.vel = startVel;
+		this.vel = new Vector3f(startVel);
 		
 		this.angVel = new Vector3f();
 		
@@ -394,58 +402,59 @@ public class Physics {
 				throw new PhysicsException(WHEEL_NAMES[i] + " went underground. (" + FloatMath.round(d,2) + ")");
 			
 			if (d > 0) { // op de grond?
-				// lift
-				
-				float dD = (d - dBuffer[i]) / dt,
-					  forceY = this.tyreSlope * d + this.dampSlope * dD;
-				
-				dBuffer[i] = d;
-				
-				if (forceY > 0) {
-					Vector3f liftForce = FloatMath.transform(transMat, new Vector3f(0, forceY, 0));
+				if (dt > 0) {
+					// lift
+					float dD = (d - dBuffer[i]) / dt,
+							  forceY = this.tyreSlope * d + this.dampSlope * dD;
+						
+					dBuffer[i] = d;
 					
-					totalForce.add(liftForce);
-					totalTorque.add(FloatMath.cross(relPos, liftForce));
-				} else {
-					forceY = 0;
-				}
-				
-				// remmen
-				Vector3f worldVel = this.vel.add(FloatMath.transform(this.transMatInv, FloatMath.cross(this.angVel, this.wheelPositions[i])), new Vector3f());
-				worldVel.y = 0;
-				Vector3f droneVel = FloatMath.transform(this.transMat, worldVel);
-				
-				Vector3f brakeForce;
-				if (FloatMath.norm(droneVel) > 0) {
-					brakeForce = droneVel.normalize(new Vector3f()).mul(-this.brakeForce[i]);
-				} else {
-					Vector3f direction = totalForce.normalize(new Vector3f());
-					float norm = FloatMath.norm(totalForce);
-					
-					if (norm <= this.brakeForce[i]) {
-						brakeForce = direction.mul(norm);
+					if (forceY > 0) {
+						Vector3f liftForce = FloatMath.transform(transMat, new Vector3f(0, forceY, 0));
+						
+						totalForce.add(liftForce);
+						totalTorque.add(FloatMath.cross(relPos, liftForce));
 					} else {
-						brakeForce = direction.mul(this.brakeForce[i]);
+						forceY = 0;
 					}
-				}
-				
-				totalForce.add(brakeForce);
-				totalTorque.add(FloatMath.cross(relPos, brakeForce));
-				
-				
-				// wrijving
-				if (i != 1) {
-					Vector3f xDirection =  FloatMath.transform(this.transMatInv, new Vector3f(1,0,0));
-					xDirection.y = 0;
-
-					float lateralVel = worldVel.dot(xDirection);
-
-					xDirection = FloatMath.transform(this.transMat, xDirection);
-					xDirection.normalize();
 					
-					Vector3f frictionForce =  xDirection.mul(- this.maxFC * lateralVel * forceY);
-					totalForce.add(frictionForce);
-					totalTorque.add(FloatMath.cross(relPos, frictionForce));
+					// remmen
+					Vector3f worldVel = this.vel.add(FloatMath.transform(this.transMatInv, FloatMath.cross(this.angVel, this.wheelPositions[i])), new Vector3f());
+					worldVel.y = 0;
+					Vector3f droneVel = FloatMath.transform(this.transMat, worldVel);
+					
+					Vector3f brakeForce;
+					if (FloatMath.norm(droneVel) > 0) {
+						brakeForce = droneVel.normalize(new Vector3f()).mul(-this.brakeForce[i]);
+					} else {
+						Vector3f direction = totalForce.normalize(new Vector3f());
+						float norm = FloatMath.norm(totalForce);
+						
+						if (norm <= this.brakeForce[i]) {
+							brakeForce = direction.mul(norm);
+						} else {
+							brakeForce = direction.mul(this.brakeForce[i]);
+						}
+					}
+					
+					totalForce.add(brakeForce);
+					totalTorque.add(FloatMath.cross(relPos, brakeForce));
+					
+					
+					// wrijving
+					if (i != 1) {
+						Vector3f xDirection =  FloatMath.transform(this.transMatInv, new Vector3f(1,0,0));
+						xDirection.y = 0;
+
+						float lateralVel = worldVel.dot(xDirection);
+
+						xDirection = FloatMath.transform(this.transMat, xDirection);
+						xDirection.normalize();
+						
+						Vector3f frictionForce =  xDirection.mul(- this.maxFC * lateralVel * forceY);
+						totalForce.add(frictionForce);
+						totalTorque.add(FloatMath.cross(relPos, frictionForce));
+					}
 				}
 				
 				// landingsbaan

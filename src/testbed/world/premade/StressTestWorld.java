@@ -43,7 +43,7 @@ public class StressTestWorld extends World{
 	public void setupWorld() {
 		this.ground = new Ground(50);
 		
-		this.generator = PackageGenerators.random(0.005f, 81, 1337);
+		this.generator = PackageGenerators.random(0.005f, 81, 12345);
 	}
 
 	@Override

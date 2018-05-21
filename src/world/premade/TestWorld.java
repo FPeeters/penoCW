@@ -1,55 +1,65 @@
 package world.premade;
 
+import java.util.Arrays;
+import java.util.Random;
+
 import org.joml.Vector3f;
 
-import engine.IWorldRules;
 import entities.WorldObject;
+import entities.ground.Ground;
+import entities.tarmac.Tarmac;
 import pilot.Pilot;
 import utils.Cubes;
-import utils.PhysicsException;
+import utils.FloatMath;
 import utils.Utils;
 import world.World;
 
-/**
- * Place where all the GameItem are to be placed in
- */
-public class TestWorld extends World implements IWorldRules {
+public class TestWorld extends World {
 
-    public TestWorld() {
-        super(1, true);
-    }
+	public TestWorld() {
+		super(1, true);
+	}
+	
+	@Override
+	public void setup() {
+		this.config = Utils.createDefaultConfig();
+		
+		addDrone(config, new Vector3f(0, -config.getWheelY() + config.getTyreRadius(), 0), new Vector3f(0,0,0), FloatMath.toRadians(0));
+		
+		this.planner = new Pilot(new int[] {Pilot.WAIT_PATH, Pilot.TAKING_OFF, Pilot.FLYING, Pilot.LANDING, Pilot.HANDBRAKE});
+		
+		this.worldObjects = new WorldObject[] {new WorldObject(Cubes.getBlueCube().getMesh()),
+											   new WorldObject(Cubes.getGreenCube().getMesh()),
+											   new WorldObject(Cubes.getYellowCube().getMesh()),
+											   new WorldObject(Cubes.getRedCube().getMesh()),
+											   new WorldObject(Cubes.getCyanCube().getMesh())};
+		
+		Random rand = new Random();
+		int[] x = rand.ints(5, -1500, 1500).toArray();
+		int[] y = rand.ints(5, 0, 300).toArray();
+		int[] z = rand.ints(5, -1500, 1500).toArray();
+		
+		this.worldObjects[0].setPosition(new Vector3f(x[0], y[0], z[0]));
+		this.worldObjects[1].setPosition(new Vector3f(x[1], y[1], z[1]));
+		this.worldObjects[2].setPosition(new Vector3f(x[2], y[2], z[2]));
+		this.worldObjects[3].setPosition(new Vector3f(x[3], y[3], z[3]));
+		this.worldObjects[4].setPosition(new Vector3f(x[4], y[4], z[4]));
+		System.out.println(new Vector3f(x[0], y[0], z[0]));
+		System.out.println(new Vector3f(x[1], y[1], z[1]));
+		System.out.println(new Vector3f(x[2], y[2], z[2]));
+		System.out.println(new Vector3f(x[3], y[3], z[3]));
+		System.out.println(new Vector3f(x[4], y[4], z[4]));
+		
+		Arrays.asList(worldObjects).stream().forEach(c -> c.setScale(5));
 
-    @Override
-    public void setup() {
-    	config = Utils.createDefaultConfig();
-    	  
-    	addDrone(config, new Vector3f(0,0,0), new Vector3f(0,0,-12f));
-
-    	planner = new Pilot(new int[] {});
-
-        worldObjects = new WorldObject[5];
-
-        worldObjects[0] = new WorldObject(Cubes.getCubes()[0].getMesh());
-        worldObjects[0].setPosition(0f, 10f, -50f);
-        worldObjects[1] = new WorldObject(Cubes.getCubes()[1].getMesh());
-        worldObjects[1].setPosition(0f, 4f, -100f);
-        worldObjects[2] = new WorldObject(Cubes.getCubes()[2].getMesh());
-        worldObjects[2].setPosition(0f, 0f, -150f);
-        worldObjects[3] = new WorldObject(Cubes.getCubes()[3].getMesh());
-        worldObjects[3].setPosition(0f, -2f, -200f);
-        worldObjects[4] = new WorldObject(Cubes.getCubes()[4].getMesh());
-        worldObjects[4].setPosition(0f, 8f, -250f);
-
-        float thrust = 20f;
-        try {
-        	droneHelper.getDronePhysics(config.getDroneID()).updateDrone(Utils.buildOutputs(0 ,0, 0, 0, thrust,0,0,0));
-		} catch (PhysicsException e) {
-			e.printStackTrace();
-		}
-    }
+		
+		this.ground = new Ground(50);
+		this.tarmac = new Tarmac(new Vector3f(0,0,0), 30f, 300f, FloatMath.toRadians(0));
+	}
 
 	@Override
 	public String getDescription() {
-		return "World made for the first demonstration, serves nearly no purpose anymore.";
+		return "World for demonstrating the second task in the "
+				+ "first demo in the second semester.";
 	}
 }

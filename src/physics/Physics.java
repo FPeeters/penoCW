@@ -41,10 +41,6 @@ public class Physics {
 	private final boolean checkAOA;
 
 	private AutopilotConfig config;
-
-	private boolean check = false;
-
-	private boolean check2 = true;
 	
 	public Physics(boolean checkAOA) {
 		this.checkAOA = checkAOA;
@@ -250,15 +246,7 @@ public class Physics {
 	public void update(float dt) throws PhysicsException {
 		updateTransMat(dt);
 		updateHPR();
-		if (this.getPosition().z<-1000 && check2) {
-			check  = true;
-			check2 = false;
-		}
-			
-		if (-this.getVelocity().z() < 0.1 && check) {
-			System.out.println("Z2: " + this.getPosition().z);
-			check  = false;
-		}
+
 		Vector3f[] forceTorque = calculateForce(dt);
 		
 		// forward euler

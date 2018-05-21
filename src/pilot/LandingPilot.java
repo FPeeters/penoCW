@@ -43,12 +43,15 @@ public class LandingPilot extends PilotPart {
 
 	@Override
 	public AutopilotOutputs timePassed(AutopilotInputs input) {
+		boolean firstStep = false;
+		if (this.time == 0) firstStep = true;
 		Vector3f pos = new Vector3f(input.getX(), input.getY(), input.getZ());
 		
 		float dt = input.getElapsedTime() - this.time;
 		this.time = input.getElapsedTime();
 		
 		Vector3f vel = pos.sub(this.oldPos, new Vector3f()).mul(1/dt);
+		if (firstStep) vel.z = -35;
 		this.oldPos = pos;
 		
 		if (FloatMath.norm(vel) < 1) {

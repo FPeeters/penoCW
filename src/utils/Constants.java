@@ -11,7 +11,7 @@ public class Constants {
     /**
      * Premade worlds that should show in the gui.
      */
-	public static final String[] PREMADE_WORLDS = new String[] {"LandingWorld", "AirportSetupWorld", "PackageTestWorld", "AutoPilotModuleWorld", "RandomWorld", "ChainWorld"};
+	public static final String[] PREMADE_WORLDS = new String[] {"StressTestWorld", "LandingWorld", "AirportSetupWorld", "PackageTestWorld", "AutoPilotModuleWorld", "RandomWorld", "ChainWorld"};
 
 	/**
 	 * Autopilot constants
@@ -57,7 +57,7 @@ public class Constants {
      */
     public static final int TARGET_FPS = 75;
     public static final int TARGET_UPS = 100;
-    public static final float SPEED = 10f;
+    public static final float SPEED = 2.5f;
 
     /**
      * Camera constants

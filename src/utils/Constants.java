@@ -57,7 +57,7 @@ public class Constants {
      */
     public static final int TARGET_FPS = 75;
     public static final int TARGET_UPS = 100;
-    public static final float SPEED = 2.5f;
+    public static final float SPEED = 0.5f;
 
     /**
      * Camera constants

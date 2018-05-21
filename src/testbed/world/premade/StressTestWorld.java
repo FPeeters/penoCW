@@ -23,7 +23,11 @@ public class StressTestWorld extends World{
 	public void setupAirports() {
 		for(int j = -4; j < 5; j++) {
 			for(int i = -4; i < 5; i ++) {
-				addAirport(new Vector3f(i * 550, 0, j * 550), 2 * FloatMath.PI / i);
+				if(i != 0) {
+					addAirport(new Vector3f(i * 575, 0, j * 575), 2 * FloatMath.PI / i + j * 0.1f);
+				} else {
+					addAirport(new Vector3f(i * 575, 0, j * 575), (i+j) * 0.5f);
+				}
 			}
 		}
 	}

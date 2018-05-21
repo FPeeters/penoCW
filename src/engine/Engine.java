@@ -108,7 +108,7 @@ public class Engine implements Runnable {
 
 
         while (!window.windowShouldClose() && ! shouldExit) {
-            elapsedTime = timer.getElapsedTime()*2;
+            elapsedTime = timer.getElapsedTime() * 2;
             accumulator += elapsedTime;
 
             input();

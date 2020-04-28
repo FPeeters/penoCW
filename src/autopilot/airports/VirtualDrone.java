@@ -13,7 +13,7 @@ public class VirtualDrone {
         this.heading = heading;
         this.config = config;
         this.pilot = new Pilot(this, airPortManager);
-        pilot.simulationStarted(config, null);
+        pilot.simulationStarted(config);
     }
 
     private Vector3f position;
@@ -21,19 +21,19 @@ public class VirtualDrone {
 
     private Pilot pilot;
     private AutopilotConfig config;
-    private AutopilotInputs currentinputs;
-    private AutopilotOutputs currentoutputs;
+    private AutopilotInputs currentInputs;
+    private AutopilotOutputs currentOutputs;
 
     private VirtualPackage pack;
     private boolean pickedUp;
     private VirtualAirport currTarget, nextTarget;
-    
+
     public Vector3f getPosition() {
         return this.position;
     }
 
     public float getHeading() {
-        return  this.heading;
+        return this.heading;
     }
 
     public VirtualPackage getPackage() {
@@ -45,7 +45,7 @@ public class VirtualDrone {
     }
 
     public String getTask() {
-    	return isActive() ? this.pilot.getTask(): "Idle";
+        return isActive() ? this.pilot.getTask() : "Idle";
     }
 
     public void setPosition(Vector3f position) {
@@ -57,77 +57,78 @@ public class VirtualDrone {
     }
 
     public Pilot getPilot() {
-		return pilot;
-	}
+        return pilot;
+    }
 
-	public AutopilotConfig getConfig() {
+    public AutopilotConfig getConfig() {
         return config;
     }
 
     public AutopilotInputs getInputs() {
-        return currentinputs;
+        return currentInputs;
     }
 
     public void setInputs(AutopilotInputs inputs) {
         this.position = new Vector3f(inputs.getX(), inputs.getY(), inputs.getZ());
         this.heading = inputs.getHeading();
 
-        this.currentinputs = inputs;
+        this.currentInputs = inputs;
     }
 
     public AutopilotOutputs getOutputs() {
-        return currentoutputs;
+        return currentOutputs;
     }
 
-    public void setOutputs(AutopilotOutputs outputs){
-        this.currentoutputs = outputs;
+    public void setOutputs(AutopilotOutputs outputs) {
+        this.currentOutputs = outputs;
     }
 
     public void calcOutputs() {
-    	if(pilot != null) {
+        if (pilot != null) {
             setOutputs(pilot.timePassed(getInputs()));
-    	}
+        }
     }
 
-    public void setPackage(VirtualPackage vpackage){
+    public void setPackage(VirtualPackage vpackage) {
         this.pickedUp = false;
-    	this.pack = vpackage;
+        this.pack = vpackage;
     }
-    
+
     public void pickUp() {
-    	this.pickedUp = true;
-		this.pack.setStatus("Picked up");
+        this.pickedUp = true;
+        this.pack.setStatus("Picked up");
     }
-    
+
     public void deliver() {
-    	this.pack.setStatus("Delivered");
-    	this.pack = null;
-    	this.pickedUp = false;
+        this.pack.setStatus("Delivered");
+        this.pack = null;
+        this.pickedUp = false;
     }
-    
+
     public boolean pickedUp() {
-    	return pickedUp;
+        return pickedUp;
     }
-    
+
     public void setTargets(VirtualAirport currTarget, VirtualAirport nextTarget) {
-    	this.currTarget = currTarget;
-    	this.nextTarget = nextTarget;
+        this.currTarget = currTarget;
+        this.nextTarget = nextTarget;
     }
-    
+
     public VirtualAirport getTarget() {
-    	return this.currTarget;
+        return this.currTarget;
     }
-    
+
     public void nextTarget() {
-    	this.currTarget = this.nextTarget;
-    	this.nextTarget = null;
+        this.currTarget = this.nextTarget;
+        this.nextTarget = null;
     }
-    
+
     public void setPilot(Pilot pilot) {
-    	this.pilot = pilot;
+        this.pilot = pilot;
     }
 
     public void endSimulation() {
-        pilot.simulationEnded();
+        if (pilot != null)
+            pilot.simulationEnded();
     }
 }

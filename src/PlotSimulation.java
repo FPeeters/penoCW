@@ -66,8 +66,7 @@ public class PlotSimulation {
 				dataThrust.addValue(thrust, "Thrust", time + "");
 				dataXZ.addValue(-z, "XZ plot", x + "");
 			}
-		} catch (ArrayIndexOutOfBoundsException e) {
-			
+		} catch (ArrayIndexOutOfBoundsException ignored) {
 		}
 		
 		reader.close();

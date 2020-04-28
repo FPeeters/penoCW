@@ -3,7 +3,7 @@ package testbed.graphics.meshes.airport;
 import testbed.graphics.meshes.AbstractMesh;
 import utils.graphics.RGBTuple;
 
-public class TarmacMesh extends AbstractMesh{
+public class TarmacMesh extends AbstractMesh {
 
     private float width, length, height;
     RGBTuple tarm, stripe;
@@ -22,11 +22,11 @@ public class TarmacMesh extends AbstractMesh{
     @Override
     protected void setPositions() {
         this.positions = new float[]{
-                0     , height, 0,
-                width/2 , height, 0,
-                -width/2, height, 0,
-                width/2 , height, -length,
-                -width/2, height, -length,
+                0, height, 0,
+                width / 2, height, 0,
+                -width / 2, height, 0,
+                width / 2, height, -length,
+                -width / 2, height, -length,
         };
     }
 
@@ -44,8 +44,8 @@ public class TarmacMesh extends AbstractMesh{
     @Override
     protected void setIndices() {
         this.indices = new int[]{
-                1,2,3,
-                2,3,4,
+                1, 2, 3,
+                2, 3, 4,
         };
     }
 }

@@ -30,9 +30,9 @@ public class WorldObject {
         this.position.y = y;
         this.position.z = z;
     }
-    
+
     public void setPosition(Vector3f position) {
-    	this.position = position;
+        this.position = position;
     }
 
     public float getScale() {

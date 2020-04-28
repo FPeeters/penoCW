@@ -2,10 +2,7 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # Intellij .iml files
-lib/MiniPID-Java/MiniPID-Java.iml
-lib/jfreechart/src/main/main.iml
-lib/jfreechart/src/test/test.iml
-p_en_o_cw_2017/p_en_o_cw_2017.iml
+*.iml
 
 # project specific
 ss.png
@@ -20,8 +17,6 @@ provided_testbed/joml-1.9.3.jar
 .idea/
 pno.iml
 
-# Project specific
-ss.png
 # User-specific stuff:
 .idea/**/workspace.xml
 .idea/**/tasks.xml

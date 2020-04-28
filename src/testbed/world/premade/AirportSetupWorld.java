@@ -8,6 +8,7 @@ import utils.Utils;
 
 import org.joml.Vector3f;
 
+@SuppressWarnings("unused")
 public class AirportSetupWorld extends World {
 	
     public AirportSetupWorld() {
@@ -34,7 +35,7 @@ public class AirportSetupWorld extends World {
 	public void setupDrones() {		
 		for(int i = 0; i < amount; i++) {
 			for(int j = 0; j < 2; j++) {
-				addDrone(String.valueOf(i) + String.valueOf(j), i, j, 0);
+				addDrone("" + i + j, i, j, 0);
 			}	
 		}
 	}

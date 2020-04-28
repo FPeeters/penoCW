@@ -22,35 +22,31 @@ public class Engine implements Runnable {
 
     private final MouseInput mouseInput;
 
-	private boolean shouldExit = false;
+    private boolean shouldExit = false;
 
     /**
      * Engine constructor
-     * @param windowTitle
-     *        The tile given to the window
-     * @param width
-     *        The width of the window
-     * @param height
-     *        The height of the window
-     * @param vSync
-     *        Whether vSync is enabled or not
-     * @param worldRules
-     *        The interface that the world has to follow
-     * @throws Exception
-     *         If something goes wrong
+     *
+     * @param windowTitle The tile given to the window
+     * @param vSync       Whether vSync is enabled or not
+     * @param worldRules  The interface that the world has to follow
      */
-    public Engine(String windowTitle, boolean vSync, IWorldRules worldRules) throws Exception {
+    public Engine(String windowTitle, boolean vSync, IWorldRules worldRules) {
         gameLoopThread = new Thread(this, "GAME_LOOP_THREAD");
-        
+
         int ubuntuSiderBar = 0, windowsToolBar = 0;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        if (System.getProperty("os.name").equals("Linux")) {ubuntuSiderBar = Constants.UBUNTU_SIDEBAR;}
-        if (System.getProperty("os.name").contains("Windows")) {windowsToolBar = 80;}
+        if (System.getProperty("os.name").equals("Linux")) {
+            ubuntuSiderBar = Constants.UBUNTU_SIDEBAR;
+        }
+        if (System.getProperty("os.name").contains("Windows")) {
+            windowsToolBar = 80;
+        }
         int width = screenSize.width - Constants.TESTBED_GUI_WIDTH - ubuntuSiderBar;
         int height = screenSize.height - windowsToolBar;
-        
+
         window = new Window(windowTitle, width, height, vSync);
-        
+
         mouseInput = new MouseInput();
         this.worldRules = worldRules;
         timer = new Timer();
@@ -60,7 +56,7 @@ public class Engine implements Runnable {
      * Game loop start
      */
     public void start() {
-        gameLoopThread.start();    
+        gameLoopThread.start();
     }
 
     @Override
@@ -77,28 +73,26 @@ public class Engine implements Runnable {
 
     /**
      * Initialize all programs used in this world
-     * @throws Exception
-     *         If something goes wrong
      */
-    protected void init() throws Exception {
+    protected void init() {
         window.init();
         timer.init();
         mouseInput.init(window);
         worldRules.init(window, this);
     }
-    
+
     public void setLoopShouldExit() {
-    	this.shouldExit = true;
+        this.shouldExit = true;
     }
-    
+
     /**
      * elapsedTime: time since last loop in seconds
      * accumulator: total elapsed time since last update
      * interval: how often we should update
      * -> when accumulator exceeds interval an update occurs
-     *
+     * <p>
      * render(): will render the objects in the world
-     *
+     * <p>
      * vsync(): depending on whether we have vsync on, sync yourself.
      */
     protected void gameLoop() {
@@ -107,7 +101,7 @@ public class Engine implements Runnable {
         float interval = 1f / Constants.TARGET_UPS;
 
 
-        while (!window.windowShouldClose() && ! shouldExit) {
+        while (!window.windowShouldClose() && !shouldExit) {
             elapsedTime = timer.getElapsedTime() * Constants.SPEED;
             accumulator += elapsedTime;
 
@@ -117,9 +111,9 @@ public class Engine implements Runnable {
                 update(interval);
                 accumulator -= interval;
             }
-            
+
             if (shouldExit)
-            	break;
+                break;
 
             render();
 
@@ -143,7 +137,7 @@ public class Engine implements Runnable {
         while (timer.getTime() < endTime) {
             try {
                 Thread.sleep(1);
-            } catch (InterruptedException ie) {
+            } catch (InterruptedException ignored) {
             }
         }
     }
@@ -153,14 +147,14 @@ public class Engine implements Runnable {
      * Handle the input in the window
      */
     protected void input() {
-        mouseInput.input(window);
+        mouseInput.input();
         worldRules.input(window, mouseInput);
     }
 
     /**
      * Update the game objects
-     * @param interval
-     *        How big the delta is
+     *
+     * @param interval How big the delta is
      */
     protected void update(float interval) {
         worldRules.update(interval, mouseInput);

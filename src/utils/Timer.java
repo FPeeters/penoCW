@@ -21,8 +21,9 @@ public class Timer {
 
     /**
      * Measures the time between init and elapsedTime or between two consecutive elapsedTime calls
+     *
      * @return elapsedTime
-     *         Time in seconds
+     * Time in seconds
      */
     public float getElapsedTime() {
         double time = getTime();
@@ -33,8 +34,9 @@ public class Timer {
 
     /**
      * Simply return when this function was called the last time.
+     *
      * @return lastTime
-     *         Time in seconds
+     * Time in seconds
      */
     public double getLastLoopTime() {
         return lastLoopTime;

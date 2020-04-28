@@ -6,6 +6,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
 import utils.Constants;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -28,28 +29,18 @@ public class Window {
     private long windowHandle;
 
     /**
-     * Has the window been resized
-     */
-    private boolean resized;
-
-    /**
      * Are we using vSync on the GPU or do we have to use it ourselves
      */
     private boolean vSync;
 
     /**
      * Constructor
-     * @param title
-     * @param width
-     * @param height
-     * @param vSync
      */
     public Window(String title, int width, int height, boolean vSync) {
         this.title = title;
         this.width = width;
         this.height = height;
         this.vSync = vSync;
-        this.resized = false;
     }
 
     /**
@@ -84,7 +75,6 @@ public class Window {
         glfwSetFramebufferSizeCallback(windowHandle, (window, width, height) -> {
             this.width = width;
             this.height = height;
-            this.setResized(true);
         });
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
@@ -126,10 +116,6 @@ public class Window {
         return windowHandle;
     }
 
-    public void setClearColor(float r, float g, float b, float alpha) {
-        glClearColor(r, g, b, alpha);
-    }
-
     public boolean isKeyPressed(int keyCode) {
         return glfwGetKey(windowHandle, keyCode) == GLFW_PRESS;
     }
@@ -150,22 +136,10 @@ public class Window {
         return height;
     }
 
-    public boolean isResized() {
-        return resized;
-    }
-
-    public void setResized(boolean resized) {
-        this.resized = resized;
-    }
-
     public boolean isvSync() {
         return vSync;
     }
 
-    public void setvSync(boolean vSync) {
-        this.vSync = vSync;
-    }
-    
     public void restoreState() {
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_STENCIL_TEST);

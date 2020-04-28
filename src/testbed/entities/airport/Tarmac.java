@@ -13,10 +13,6 @@ public class Tarmac {
     private Vector3f position;
     private float width, length, rotation;
     private WorldObject object;
-    private RGBTuple colorTarmac = new RGBTuple();
-    private RGBTuple colorStripes = new RGBTuple();
-
-    private float UP_DELTA = 0.05f;
 
     public Tarmac(Vector3f position, float width, float length, float rotation) {
         this.position = position;
@@ -24,9 +20,12 @@ public class Tarmac {
         this.rotation = rotation;
         this.length = length;
 
-        this.colorTarmac.set(Utils.toRGB(250, 0.1f, 0.7f));
-        this.colorStripes.set(Utils.toRGB(0,0,1f));
+        RGBTuple colorTarmac = new RGBTuple();
+        colorTarmac.set(Utils.toRGB(250, 0.1f, 0.7f));
+        RGBTuple colorStripes = new RGBTuple();
+        colorStripes.set(Utils.toRGB(0, 0, 1f));
 
+        float UP_DELTA = 0.05f;
         this.object = new WorldObject(new TarmacMesh(width, length, UP_DELTA, colorTarmac, colorStripes).getMesh());
         this.object.setPosition(position);
         this.object.setRotation(0, -rotation, 0);

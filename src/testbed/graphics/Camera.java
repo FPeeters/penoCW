@@ -2,8 +2,6 @@ package testbed.graphics;
 
 import org.joml.Vector3f;
 
-import testbed.Physics;
-
 public class Camera {
 
     /**
@@ -27,10 +25,9 @@ public class Camera {
 
     /**
      * Init with given pos en rotation
-     * @param position
-     *        Given pos
-     * @param rotation
-     *        Given rot
+     *
+     * @param position Given pos
+     * @param rotation Given rot
      */
     public Camera(Vector3f position, Vector3f rotation) {
         this.position = position;
@@ -47,14 +44,14 @@ public class Camera {
         position.z = z;
     }
 
-    public void movePosition(float offsetX, float offsetY, float offsetZ, Physics physics) {
-        if ( offsetZ != 0 ) {
-            position.x += (float)Math.sin(Math.toRadians(rotation.y)) * -offsetZ;
-            position.z += (float)Math.cos(Math.toRadians(rotation.y)) * offsetZ;
+    public void movePosition(float offsetX, float offsetY, float offsetZ) {
+        if (offsetZ != 0) {
+            position.x += (float) Math.sin(Math.toRadians(rotation.y)) * -offsetZ;
+            position.z += (float) Math.cos(Math.toRadians(rotation.y)) * offsetZ;
         }
-        if ( offsetX != 0) {
-            position.x += (float)Math.sin(Math.toRadians(rotation.y - 90)) * -offsetX;
-            position.z += (float)Math.cos(Math.toRadians(rotation.y - 90)) * offsetX;
+        if (offsetX != 0) {
+            position.x += (float) Math.sin(Math.toRadians(rotation.y - 90)) * -offsetX;
+            position.z += (float) Math.cos(Math.toRadians(rotation.y - 90)) * offsetX;
         }
         position.y += offsetY;
     }

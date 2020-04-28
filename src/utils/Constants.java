@@ -7,34 +7,25 @@ public class Constants {
      */
     public static final String TITLE = "PnO Drone Simulation";
     public static final boolean VSYNC = true;
-    
+
     /**
      * Premade worlds that should show in the gui.
      */
-	public static final String[] PREMADE_WORLDS = new String[] {"LandingWorld", "AirportSetupWorld", "PackageTestWorld", "AutoPilotModuleWorld", "RandomWorld", "ChainWorld"};
-
-	/**
-	 * Autopilot constants
-	 */
-	public static float climbAngle = FloatMath.toRadians(10);
-
+    public static final String[] PREMADE_WORLDS = new String[]{"LandingWorld", "AirportSetupWorld", "PackageTestWorld", "AutoPilotModuleWorld", "RandomWorld", "ChainWorld"};
 
     /**
-     * Drone pickup accuracy
+     * Autopilot constants
      */
-    public static final float PICKUP_DISTANCE = 3f;
-    public static final float DRONE_PICKUP_DISTANCE = 5f;
-
+    public static float climbAngle = FloatMath.toRadians(10);
 
     /**
      * GUI
-     */    
+     */
     public static final int TESTBED_GUI_HEIGHT = 1000;
     public static final int TESTBED_GUI_WIDTH = 500;
-    
+
     public static final float COLLISION_RANGE = 5f;
-    public static final float PATH_ACCURACY = 0f;
-    
+
     /**
      * Renderer constants
      */
@@ -45,13 +36,12 @@ public class Constants {
     public static final float DRONE_WHEEL_THICKNESS = 0.08f;
     public static final int DRONE_LEFT_WING = 0;
     public static final int DRONE_RIGHT_WING = 1;
-    public static final int DRONE_BODY = 2;
     public static final int DRONE_WHEEL_FRONT = 3;
     public static final int DRONE_WHEEL_BACK_LEFT = 4;
     public static final int DRONE_WHEEL_BACK_RIGHT = 5;
-    
+
     public static final int UBUNTU_SIDEBAR = 105;
-    
+
     /**
      * Game engine
      */
@@ -66,7 +56,7 @@ public class Constants {
     public static final float CAMERA_POS_STEP = 0.5f;
     public static final int TILE_SIZE = 75;
     public static final float ORTHO_OFFSET = 500f;
-    
+
     /**
      * Default config settings
      */
@@ -85,7 +75,7 @@ public class Constants {
     public static final int DEFAULT_HOR_FOV = 120;
     public static final int DEFAULT_NB_COLS = 200;
     public static final int DEFAULT_NB_ROWS = 200;
-    
+
     public static final float DEFAULT_AIRPORT_LENGTH = 250f;
     public static final float DEFAULT_AIRPORT_WIDTH = 50f;
 }

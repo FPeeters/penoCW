@@ -14,34 +14,34 @@ public class RightWing extends DroneComponent {
     protected void setPositions() {
         this.positions = new float[]{
                 //top
-                config.getTailSize()/8, this.thickness, -config.getWingX()/4, //#0
-                config.getWingX()*2f, this.thickness, -config.getWingX()/4, //#1
-                config.getWingX()*2f, this.thickness, config.getWingX()/4, //#2
-                config.getTailSize()/8, this.thickness, config.getWingX()/4, //#3
-                
+                config.getTailSize() / 8, this.thickness, -config.getWingX() / 4, //#0
+                config.getWingX() * 2f, this.thickness, -config.getWingX() / 4, //#1
+                config.getWingX() * 2f, this.thickness, config.getWingX() / 4, //#2
+                config.getTailSize() / 8, this.thickness, config.getWingX() / 4, //#3
+
                 //bot
-                config.getTailSize()/8, -this.thickness, -config.getWingX()/4, //#0
-                config.getWingX()*2f, -this.thickness, -config.getWingX()/4, //#1
-                config.getWingX()*2f, -this.thickness, config.getWingX()/4, //#2
-                config.getTailSize()/8, -this.thickness, config.getWingX()/4, //#3
+                config.getTailSize() / 8, -this.thickness, -config.getWingX() / 4, //#0
+                config.getWingX() * 2f, -this.thickness, -config.getWingX() / 4, //#1
+                config.getWingX() * 2f, -this.thickness, config.getWingX() / 4, //#2
+                config.getTailSize() / 8, -this.thickness, config.getWingX() / 4, //#3
         };
     }
 
     protected void setColours() {
         this.colours = new float[]{
-                1f, 1f  , 0.0f,
+                1f, 1f, 0.0f,
                 1f, 0.5f, 0.0f,
                 1f, 0.5f, 0.0f,
-                1f, 1f  , 0.0f,
-                
-                1f, 1f  , 0.0f,
+                1f, 1f, 0.0f,
+
+                1f, 1f, 0.0f,
                 1f, 0.5f, 0.0f,
                 1f, 0.5f, 0.0f,
-                1f, 1f  , 0.0f,
+                1f, 1f, 0.0f,
         };
     }
 
-    protected void setIndices(){
+    protected void setIndices() {
         this.indices = new int[]{
                 //Top wing plane
                 1, 2, 0, 3, 2, 0,
@@ -54,7 +54,7 @@ public class RightWing extends DroneComponent {
                 //left side
                 1, 2, 5, 5, 2, 6,
                 //right side
-                7, 0 ,3, 7, 3, 4,
+                7, 0, 3, 7, 3, 4,
         };
     }
 

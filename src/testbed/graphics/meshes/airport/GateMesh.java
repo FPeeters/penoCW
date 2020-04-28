@@ -20,11 +20,11 @@ public class GateMesh extends AbstractMesh {
     @Override
     protected void setPositions() {
         this.positions = new float[]{
-                0     , height, 0,
-                width/2 , height, 0,
-                -width/2 , height, 0,
-                width/2 , height, -width,
-                -width/2, height, -width,
+                0, height, 0,
+                width / 2, height, 0,
+                -width / 2, height, 0,
+                width / 2, height, -width,
+                -width / 2, height, -width,
         };
     }
 
@@ -42,8 +42,8 @@ public class GateMesh extends AbstractMesh {
     @Override
     protected void setIndices() {
         this.indices = new int[]{
-                1,2,3,
-                2,3,4,
+                1, 2, 3,
+                2, 3, 4,
         };
     }
 

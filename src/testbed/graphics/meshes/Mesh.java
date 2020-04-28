@@ -19,14 +19,14 @@ public class Mesh {
     private final List<Integer> vboIdList;
 
     private final int vertexCount;
+
     /**
      * Creates the VBO and VAO objects loaded into the graphics card. Pretty much the base model
      * that can be passed to a gameObject that describes its shape.
-     * @param positions
-     *        List of all the used vertices. Will be wrapped in a VBO
-     * @param indices
-     *        List of the indices of the vertices. Can be used to save space by referencing two overlapping
-     *        vertices with just one index. Also wrapped into a index VBO
+     *
+     * @param positions List of all the used vertices. Will be wrapped in a VBO
+     * @param indices   List of the indices of the vertices. Can be used to save space by referencing two overlapping
+     *                  vertices with just one index. Also wrapped into a index VBO
      */
     public Mesh(float[] positions, float[] colours, int[] indices) {
         FloatBuffer posBuffer = null;

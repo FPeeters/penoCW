@@ -21,8 +21,8 @@ public class ShaderProgram {
 
     /**
      * Create an openGL shader program
-     * @throws Exception
-     *         If something goes wrong with the shader creation
+     *
+     * @throws Exception If something goes wrong with the shader creation
      */
     public ShaderProgram() throws Exception {
         programId = glCreateProgram();
@@ -34,10 +34,9 @@ public class ShaderProgram {
 
     /**
      * Add Uniforms to the vertexShader
-     * @param uniformName
-     *        Name param added to the shader
-     * @throws Exception
-     *         If we can't find the name of the uniform
+     *
+     * @param uniformName Name param added to the shader
+     * @throws Exception If we can't find the name of the uniform
      */
     public void createUniform(String uniformName) throws Exception {
         int uniformLocation = glGetUniformLocation(programId, uniformName);
@@ -49,10 +48,9 @@ public class ShaderProgram {
 
     /**
      * Set the uniforms of the vertex shaders
-     * @param uniformName
-     *        Name param added to the shader
-     * @param value
-     *        The value to be set to the uniform
+     *
+     * @param uniformName Name param added to the shader
+     * @param value       The value to be set to the uniform
      */
     public void setUniform(String uniformName, Matrix4f value) {
         // Dump the matrix into a float buffer
@@ -63,15 +61,11 @@ public class ShaderProgram {
         }
     }
 
-    public void setUniform(String uniformName, int value) {
-        glUniform1i(uniforms.get(uniformName), value);
-    }
     /**
      * Create the vertexShader using the a vertex file
-     * @param shaderCode
-     *        What can be found in the shader file (mainly vertex.fs)
-     * @throws Exception
-     *        If something goes wrong
+     *
+     * @param shaderCode What can be found in the shader file (mainly vertex.fs)
+     * @throws Exception If something goes wrong
      */
     public void createVertexShader(String shaderCode) throws Exception {
         vertexShaderId = createShader(shaderCode, GL_VERTEX_SHADER);
@@ -79,10 +73,9 @@ public class ShaderProgram {
 
     /**
      * Create the fragmentShader using a shader file
-     * @param shaderCode
-     *        The content of the fragmentShader file
-     * @throws Exception
-     *         If something goes wrong
+     *
+     * @param shaderCode The content of the fragmentShader file
+     * @throws Exception If something goes wrong
      */
     public void createFragmentShader(String shaderCode) throws Exception {
         fragmentShaderId = createShader(shaderCode, GL_FRAGMENT_SHADER);
@@ -90,14 +83,11 @@ public class ShaderProgram {
 
     /**
      * Base code for any shader creation
-     * @param shaderCode
-     *        The code to be passed to the shader
-     * @param shaderType
-     *        What kind of shader (GL_FRAGMENT_SHADER, GL_VERTEX_SHADER, ...)
-     * @return
-     *        The ID of the shader
-     * @throws Exception
-     *         If something goes wrong
+     *
+     * @param shaderCode The code to be passed to the shader
+     * @param shaderType What kind of shader (GL_FRAGMENT_SHADER, GL_VERTEX_SHADER, ...)
+     * @return The ID of the shader
+     * @throws Exception If something goes wrong
      */
     protected int createShader(String shaderCode, int shaderType) throws Exception {
         int shaderId = glCreateShader(shaderType);
@@ -120,8 +110,8 @@ public class ShaderProgram {
 
     /**
      * The attached shaders can be linked to the program and detached
-     * @throws Exception
-     *         If something goes wrong
+     *
+     * @throws Exception If something goes wrong
      */
     public void link() throws Exception {
         //attached shaders will be made in to executables

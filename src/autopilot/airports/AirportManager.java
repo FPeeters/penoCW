@@ -98,8 +98,6 @@ public class AirportManager implements AutopilotModule {
      * if a drone picked up a packet.
      */
     private void handleTransportEvents(float time) {
-
-
         float dt = time - this.oldTimeHandleTransport;
         oldTimeBuffer += dt;
 
